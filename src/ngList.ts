@@ -20,8 +20,16 @@ export const inject = () => {
   const originalFetch = window.fetch;
   const customFetch: typeof fetch = async (...args) => {
     const url = args[0];
+    const options = args[1];
     const response = await originalFetch.apply(this, args);
-    if (!url.toString().includes("/v1/tmp/comments")) {
+    if (
+      !(
+        typeof url === "string" &&
+        url.includes("/v1/tmp/comments") &&
+        options &&
+        (options.method?.toUpperCase() || "GET") === "GET"
+      )
+    ) {
       return response;
     }
     const json: { data: { comments: Comment[] } } = await response.json();
