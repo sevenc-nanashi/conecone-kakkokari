@@ -25,6 +25,7 @@ jobs:
 
       - name: Switch to release branch
         run: |
+          git fetch origin built
           git switch built
           git pull origin built
 
