@@ -19,21 +19,18 @@ jobs:
         run: bun install
 
       - name: Build
-        run: bun run build
+        run: |
+          bun run build
+          cp dist/index.user.js /tmp/index.user.js
 
-      - uses: actions/upload-pages-artifact@v2
-        with:
-          path: dist
+      - name: Switch to release branch
+        run: |
+          git switch built
+          git pull origin built
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    permissions:
-      pages: write
-      id-token: write
-    steps:
-      - uses: actions/deploy-pages@v2
-        id: deployment
+      - name: Copy built file
+        run: |
+          git clean -df
+          cp /tmp/index.user.js dist/index.user.json
+          git commit -am "Update built file"
+          git push origin built

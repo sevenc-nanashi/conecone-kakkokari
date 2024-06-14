@@ -9,8 +9,7 @@
 ## 使い方
 
 1. [Tampermonkey](https://www.tampermonkey.net/)をインストールします。
-2. このURLを読み込みます：[`https://sevenc7c.com/conecone-kakkokari/index.user.js`](https://sevenc7c.com/conecone-kakkokari/index.user.js)
-3. ページをリロードします。
+2. このURLを読み込みます：[`https://raw.githubusercontent.com/sevenc-nanashi/conecone-kakkokari/built/index.user.js`](https://raw.githubusercontent.com/sevenc-nanashi/conecone-kakkokari/built/index.user.js)
 
 ## ライセンス
 
