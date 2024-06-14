@@ -2,6 +2,7 @@
 // @name コネコネ（仮）
 // @description ニコニコ（Re:仮）の補助ツール。
 // @version v0.0.1
+// @homepage https://github.com/sevenc-nanashi/conecone-kakkokari
 // @match https://www.nicovideo.jp/*
 // @updateURL https://sevenc7c.com/conecone-kakkokari/index.user.js
 // @downloadURL https://sevenc7c.com/conecone-kakkokari/index.user.js
