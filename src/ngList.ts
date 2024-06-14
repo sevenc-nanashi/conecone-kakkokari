@@ -10,6 +10,8 @@ type Comment = {
   vposMsec: number;
 };
 
+const defaultNgs = ["んん～まか", "🤏😎", "にょ、にょまれ", "✋🐮✋💦"];
+
 export const inject = () => {
   if (!location.pathname.startsWith("/watch_tmp/")) {
     return;
@@ -26,7 +28,7 @@ export const inject = () => {
     const comments = json.data.comments;
     const ngList: string[] = localStorage.getItem("ngList")
       ? JSON.parse(localStorage.getItem("ngList")!)
-      : [];
+      : defaultNgs;
 
     const filteredComments = comments.filter((comment) => {
       return !ngList.some((ng) => comment.message.includes(ng));
@@ -76,7 +78,7 @@ export const main = async () => {
     const ngVisible = van.state(false);
     const ngList: string[] = localStorage.getItem("ngList")
       ? JSON.parse(localStorage.getItem("ngList")!)
-      : [];
+      : defaultNgs;
     const ngListTextarea = textarea({
       style: () => `
       width: 100%;
