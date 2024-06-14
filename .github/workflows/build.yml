@@ -32,6 +32,6 @@ jobs:
       - name: Copy built file
         run: |
           git clean -df
-          cp /tmp/index.user.js dist/index.user.json
+          cp /tmp/index.user.js index.user.js
           git commit -am "Update built file"
           git push origin built
