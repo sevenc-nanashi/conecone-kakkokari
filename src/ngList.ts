@@ -110,6 +110,7 @@ export const main = async () => {
         background-color: #252525;
         z-index: 1000;
         `,
+        classList: "ngDashboard",
       },
       h2(
         {

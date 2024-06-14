@@ -1,5 +1,6 @@
 import packageJson from "../package.json";
 import * as ngList from "./ngList.ts";
+import * as fullScreen from "./fullScreen.ts";
 
 console.log(
   "" +
@@ -24,3 +25,4 @@ for (const script of [ngList.inject]) {
 }
 
 ngList.main();
+fullScreen.main();
