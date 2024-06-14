@@ -28,7 +28,7 @@ export const inject = () => {
     const comments = json.data.comments;
     const ngList: string[] = localStorage.getItem("ngList")
       ? JSON.parse(localStorage.getItem("ngList")!)
-      : defaultNgs;
+      : ["んん～まか", "🤏😎", "にょ、にょまれ", "✋🐮✋💦"];
 
     const filteredComments = comments.filter((comment) => {
       return !ngList.some((ng) => comment.message.includes(ng));
