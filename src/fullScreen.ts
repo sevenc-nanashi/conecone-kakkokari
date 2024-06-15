@@ -51,6 +51,9 @@ export const main = async () => {
     videoPlayer.addEventListener("click", activate);
     innerPlayer.addEventListener("keydown", (e) => {
       const event = e as KeyboardEvent;
+      if ((event.target as HTMLElement)?.tagName === "INPUT") {
+        return;
+      }
       if (event.key === "f") {
         toggleFullscreen();
       }
