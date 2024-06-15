@@ -3,6 +3,7 @@ import * as ngList from "./ngList.ts";
 import * as fullScreen from "./fullScreen.ts";
 import * as styles from "./styles.ts";
 import * as doubleTap from "./doubleTap.ts";
+import * as customSupporterVoice from "./customSupporterVoice.ts";
 
 console.log(
   "" +
@@ -20,13 +21,14 @@ console.log(
   "color: #18b4e6",
 );
 
-for (const script of [ngList.inject]) {
+for (const script of [ngList.inject, customSupporterVoice.inject]) {
   const scriptElement = document.createElement("script");
   scriptElement.textContent = `(${script.toString()})()`;
-  document.body.appendChild(scriptElement);
+  document.head.appendChild(scriptElement);
 }
 
 styles.main();
 ngList.main();
 fullScreen.main();
+customSupporterVoice.main();
 doubleTap.main();

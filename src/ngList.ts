@@ -108,7 +108,7 @@ export const main = async () => {
         gap: 0.5rem;
         color: #fff;
         right: 1rem;
-        bottom: 1rem;
+        bottom: 64px;
         padding: 1rem;
         background-color: #252525;
         z-index: 1000;
