@@ -2,9 +2,7 @@ import packageJson from "../package.json";
 import * as ngList from "./ngList.ts";
 import * as fullScreen from "./fullScreen.ts";
 import * as styles from "./styles.ts";
-import van from "vanjs-core";
-
-const { style } = van.tags;
+import * as doubleTap from "./doubleTap.ts";
 
 console.log(
   "" +
@@ -31,3 +29,4 @@ for (const script of [ngList.inject]) {
 styles.main();
 ngList.main();
 fullScreen.main();
+doubleTap.main();

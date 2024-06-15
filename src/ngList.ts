@@ -73,12 +73,12 @@ export const main = async () => {
   }
   while (true) {
     await new Promise((resolve) => requestAnimationFrame(resolve));
-    const player = document.querySelector(".w_var\\(--player-width\\)");
+    const player = document.querySelector(".playerContainer");
     if (!player) {
       continue;
     }
 
-    const innerPlayer = player.querySelector(".aspect_16_\\/_9");
+    const innerPlayer = player.querySelector(".innerPlayer");
     if (!innerPlayer) {
       throw new Error("Failed to find inner player");
     }
@@ -94,6 +94,9 @@ export const main = async () => {
       height: 10rem;
       background-color: #fff;
       `,
+      onkeydown: (e) => {
+        e.stopPropagation();
+      },
       value: ngList.join("\n"),
     });
     const ngDashboard = div(
