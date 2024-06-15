@@ -27,7 +27,7 @@ jobs:
       - name: Switch to release branch
         run: |
           git fetch origin built
-          git switch built
+          git switch built -f
           git pull origin built
 
       - name: Copy built file
