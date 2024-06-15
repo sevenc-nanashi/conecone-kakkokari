@@ -8,8 +8,8 @@ const bannerMap: Record<string, string> = {
   version: `${packageJson.version}`,
   homepage: packageJson.homepage,
   match: "https://www.nicovideo.jp/*",
-  updateURL: "https://sevenc7c.com/conecone-kakkokari/index.user.js",
-  downloadURL: "https://sevenc7c.com/conecone-kakkokari/index.user.js",
+  updateURL: "https://raw.githubusercontent.com/sevenc-nanashi/conecone-kakkokari/built/index.user.js",
+  downloadURL: "https://raw.githubusercontent.com/sevenc-nanashi/conecone-kakkokari/built/index.user.js",
   sandbox: "MAIN_WORLD",
 };
 const banner =

@@ -1,23 +1,15 @@
 // フルスクリーン
 import clsx from "clsx";
 import van from "vanjs-core";
-import stylesheet from "./fullScreen.scss";
 import { mdiFullscreen, mdiFullscreenExit } from "@mdi/js";
-const { div, h2, p, textarea, button, style } = van.tags;
+const { form, input, button } = van.tags;
 const { path, svg } = van.tags("http://www.w3.org/2000/svg");
-
-const queryOrThrow = (selector: string) => {
-  const el = document.querySelector(selector);
-  if (!el) {
-    throw new Error(`Failed to find element: ${selector}`);
-  }
-  return el;
-};
 
 export const main = async () => {
   if (!location.pathname.startsWith("/watch_tmp/")) {
     return;
   }
+  console.log("Injecting: Fullscreen");
   if (!document.body) {
     await new Promise((resolve) =>
       window.addEventListener("DOMContentLoaded", resolve),
@@ -34,11 +26,7 @@ export const main = async () => {
 
     const innerPlayer = player.children[0];
 
-    const [videoPlayer, seekBar, actionBar] = Array.from(innerPlayer.children);
-    innerPlayer.classList.add("innerPlayer");
-    videoPlayer.classList.add("videoPlayer");
-    seekBar.classList.add("seekBar");
-    actionBar.classList.add("actionBar");
+    const [videoPlayer, _seekBar, actionBar] = Array.from(innerPlayer.children);
 
     const toggleFullscreen = () => {
       if (isFullscreen.val) {
@@ -111,9 +99,88 @@ export const main = async () => {
       ),
     );
 
-    van.add(actionBar, fullScreenButton);
+    const commandInput = player.querySelector<HTMLInputElement>(
+      'input[placeholder="コマンド"]',
+    );
+    if (!commandInput) {
+      throw new Error("Command input not found");
+    }
+    const commentInput = player.querySelector<HTMLInputElement>(
+      'input[placeholder="コメント"]',
+    );
+    if (!commentInput) {
+      throw new Error("Comment input not found");
+    }
+    const postButton = commentInput.nextElementSibling as HTMLButtonElement;
+    if (!postButton) {
+      throw new Error("Post button not found");
+    }
 
-    van.add(document.body, style(stylesheet));
+    const fsCommandInput = input({
+      type: "text",
+      placeholder: "コマンド",
+      style: () => `
+        background-color: #fff;
+        color: #000;
+        border-radius: 0;
+        -webkit-appearance: none;
+        border-top-left-radius: 0.5rem;
+        border-bottom-left-radius: 0.5rem;
+        border: 2px solid #ccc;
+        `,
+      oninput: (e) => {
+        const event = e as InputEvent;
+        commandInput.value = (event.target as HTMLInputElement).value;
+      },
+    });
+    const fsCommentInput = input({
+      type: "text",
+      placeholder: "コメント",
+      style: () => `
+        background-color: #fff;
+        color: #000;
+        border-radius: 0;
+        -webkit-appearance: none;
+        border-top: 2px solid #ccc;
+        border-bottom: 2px solid #ccc;
+        `,
+      oninput: (e) => {
+        const event = e as InputEvent;
+        commentInput.value = (event.target as HTMLInputElement).value;
+      },
+    });
+
+    const fullScreenCommentBar = form(
+      {
+        classList: "fullScreenCommentBar",
+        onsubmit: (e) => {
+          e.preventDefault();
+          fsCommandInput.value = "";
+          fsCommentInput.value = "";
+          postButton.click();
+        },
+      },
+      fsCommandInput,
+      fsCommentInput,
+      button(
+        {
+          style: () => `
+          background-color: #007cff;
+          color: #fff;
+          cursor: pointer;
+          border-radius: 0;
+          -webkit-appearance: none;
+          border-top-right-radius: 0.5rem;
+          border-bottom-right-radius: 0.5rem;
+          `,
+          type: "submit",
+        },
+        "投稿",
+      ),
+    );
+
+    van.add(actionBar, fullScreenButton);
+    van.add(actionBar, fullScreenCommentBar);
 
     break;
   }

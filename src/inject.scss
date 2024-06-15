@@ -1,0 +1,15 @@
+@use "./fullScreen.scss";
+
+.playerContainer {
+  container: player / inline-size;
+}
+
+@container (max-width: 40rem) {
+  .volume {
+    display: none;
+  }
+  // 時間
+  .currentTime {
+    display: none;
+  }
+}

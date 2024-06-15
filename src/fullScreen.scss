@@ -1,3 +1,13 @@
+.fullScreenCommentBar {
+  display: none;
+}
+
+[data-iphone="true"] {
+  .fullScreenCommentBar {
+    display: none !important;
+  }
+}
+
 .fullScreen {
   .innerPlayer {
     position: fixed;
@@ -5,6 +15,13 @@
     left: 0;
     width: 100vw;
     height: 100vh;
+  }
+
+  .videoPlayer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .seekBar {
@@ -17,6 +34,24 @@
     position: absolute;
     width: 100%;
     bottom: 0;
+  }
+
+  .fullScreenCommentBar {
+    display: grid;
+    position: absolute;
+    left: 50%;
+    bottom: 8px;
+    @media (max-width: 1150px) {
+      bottom: 64px;
+      grid-template-columns: 4rem 50vw 4rem;
+    }
+    grid-template-columns: 6rem 30vw 4rem;
+    transform: translateX(-50%);
+    height: 32px;
+
+    > * {
+      padding: 0 0.5rem;
+    }
   }
 
   &[data-activated="true"] {

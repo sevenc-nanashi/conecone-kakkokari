@@ -1,6 +1,10 @@
 import packageJson from "../package.json";
 import * as ngList from "./ngList.ts";
 import * as fullScreen from "./fullScreen.ts";
+import * as styles from "./styles.ts";
+import van from "vanjs-core";
+
+const { style } = van.tags;
 
 console.log(
   "" +
@@ -24,5 +28,6 @@ for (const script of [ngList.inject]) {
   document.body.appendChild(scriptElement);
 }
 
+styles.main();
 ngList.main();
 fullScreen.main();

@@ -158,6 +158,9 @@ export const main = async () => {
     const ngButton = div(
       {
         className: "h_24px text_#fff cursor_pointer",
+        style: `
+        font-size: 14px
+        `,
         onclick: () => {
           console.log("Clicked");
           ngVisible.val = !ngVisible.val;
