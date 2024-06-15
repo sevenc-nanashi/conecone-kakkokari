@@ -1,23 +1,23 @@
 // ==UserScript==
 // @name コネコネ（仮）
 // @description ニコニコ（Re:仮）の補助ツール。
-// @version v0.0.3
+// @version 0.1.0
 // @homepage https://github.com/sevenc-nanashi/conecone-kakkokari
 // @match https://www.nicovideo.jp/*
-// @updateURL https://sevenc7c.com/conecone-kakkokari/index.user.js
-// @downloadURL https://sevenc7c.com/conecone-kakkokari/index.user.js
+// @updateURL https://raw.githubusercontent.com/sevenc-nanashi/conecone-kakkokari/built/index.user.js
+// @downloadURL https://raw.githubusercontent.com/sevenc-nanashi/conecone-kakkokari/built/index.user.js
 // @sandbox MAIN_WORLD
 // ==/UserScript==
 
-"use strict";(()=>{var x={name:"conecone-kakkokari",module:"index.ts",version:"0.0.3",homepage:"https://github.com/sevenc-nanashi/conecone-kakkokari",scripts:{build:"bun run ./build.ts"},type:"module",devDependencies:{"@types/bun":"latest","@types/tampermonkey":"^5.0.3",esbuild:"^0.21.5"},peerDependencies:{typescript:"^5.0.0"},dependencies:{"vanjs-core":"^1.5.0"}};var a=Object.getPrototypeOf,_,V,f,h,E={isConnected:1},B=1e3,b,O={},z=a(E),j=a(a),p,P=(e,t,o,n)=>(e??(setTimeout(o,n),new Set)).add(t),T=(e,t,o)=>{let n=f;f=t;try{return e(o)}catch(s){return console.error(s),o}finally{f=n}},y=e=>e.filter(t=>t._dom?.isConnected),G=e=>b=P(b,e,()=>{for(let t of b)t._bindings=y(t._bindings),t._listeners=y(t._listeners);b=p},B),v={get val(){return f?._getters?.add(this),this.rawVal},get oldVal(){return f?._getters?.add(this),this._oldVal},set val(e){f?._setters?.add(this),e!==this.rawVal&&(this.rawVal=e,this._bindings.length+this._listeners.length?(V?.add(this),_=P(_,this,K)):this._oldVal=e)}},I=e=>({__proto__:v,rawVal:e,_oldVal:e,_bindings:[],_listeners:[]}),w=(e,t)=>{let o={_getters:new Set,_setters:new Set},n={f:e},s=h;h=[];let r=T(e,o,t);r=(r??document).nodeType?r:new Text(r);for(let i of o._getters)o._setters.has(i)||(G(i),i._bindings.push(n));for(let i of h)i._dom=r;return h=s,n._dom=r},C=(e,t=I(),o)=>{let n={_getters:new Set,_setters:new Set},s={f:e,s:t};s._dom=o??h?.push(s)??E,t.val=T(e,n,t.rawVal);for(let r of n._getters)n._setters.has(r)||(G(r),r._listeners.push(s));return t},A=(e,...t)=>{for(let o of t.flat(1/0)){let n=a(o??0),s=n===v?w(()=>o.val):n===j?w(o):o;s!=p&&e.append(s)}return e},F=(e,t,...o)=>{let[n,...s]=a(o[0]??0)===z?o:[{},...o],r=e?document.createElementNS(e,t):document.createElement(t);for(let[i,l]of Object.entries(n)){let g=u=>u?Object.getOwnPropertyDescriptor(u,i)??g(a(u)):p,c=t+","+i,d=O[c]??(O[c]=g(a(r))?.set??0),m=i.startsWith("on")?(u,W)=>{let N=i.slice(2);r.removeEventListener(N,W),r.addEventListener(N,u)}:d?d.bind(r):r.setAttribute.bind(r,i),k=a(l??0);i.startsWith("on")||k===j&&(l=C(l),k=v),k===v?w(()=>(m(l.val,l._oldVal),r)):m(l)}return A(r,...s)},D=e=>({get:(t,o)=>F.bind(p,e,o)}),R=new Proxy(e=>new Proxy(F,D(e)),D()),q=(e,t)=>t?t!==e&&e.replaceWith(t):e.remove(),K=()=>{let e=0,t=[..._].filter(n=>n.rawVal!==n._oldVal);do{V=new Set;for(let n of new Set(t.flatMap(s=>s._listeners=y(s._listeners))))C(n.f,n.s,n._dom),n._dom=p}while(++e<100&&(t=[...V]).length);let o=[..._].filter(n=>n.rawVal!==n._oldVal);_=p;for(let n of new Set(o.flatMap(s=>s._bindings=y(s._bindings))))q(n._dom,w(n.f,n._dom)),n._dom=p;for(let n of o)n._oldVal=n.rawVal},U=(e,t)=>q(e,w(t,e)),S={add:A,tags:R,state:I,derive:C,hydrate:U};var{div:J,h2:H,p:Q,textarea:X,button:Y}=S.tags,Z=["\u3093\u3093\uFF5E\u307E\u304B","\u{1F90F}\u{1F60E}","\u306B\u3087\u3001\u306B\u3087\u307E\u308C","\u270B\u{1F42E}\u270B\u{1F4A6}"],M=()=>{if(!location.pathname.startsWith("/watch_tmp/"))return;console.log("Injecting: NG list");let e=window.fetch,t=async(...o)=>{let n=o[0],s=o[1],r=await e.apply(void 0,o);if(!(typeof n=="string"&&n.includes("/v1/tmp/comments")&&s&&(s.method?.toUpperCase()||"GET")==="GET"))return r;let i=await r.json(),l=i.data.comments,g=localStorage.getItem("ngList")?JSON.parse(localStorage.getItem("ngList")):["\u3093\u3093\uFF5E\u307E\u304B","\u{1F90F}\u{1F60E}","\u306B\u3087\u3001\u306B\u3087\u307E\u308C","\u270B\u{1F42E}\u270B\u{1F4A6}"],c=l.filter(d=>!g.some(m=>d.message.includes(m)));return new Response(JSON.stringify({...i,data:{comments:c}}),{status:r.status,statusText:r.statusText,headers:r.headers})};window.fetch=t,globalThis.fetch=t},L=async()=>{if(location.pathname.startsWith("/watch_tmp/")){if(!document.body){await new Promise(e=>window.addEventListener("DOMContentLoaded",e)),L();return}for(;;){await new Promise(c=>requestAnimationFrame(c));let e=document.querySelector(".w_var\\(--player-width\\)");if(!e)continue;let t=e.querySelector(".aspect_16_\\/_9");if(!t)throw new Error("Failed to find inner player");let o=S.state(!1),n=localStorage.getItem("ngList")?JSON.parse(localStorage.getItem("ngList")):Z,s=X({style:()=>`
+"use strict";(()=>{var k={name:"conecone-kakkokari",module:"index.ts",version:"0.1.0",homepage:"https://github.com/sevenc-nanashi/conecone-kakkokari",scripts:{build:"bun run ./build.ts"},type:"module",devDependencies:{"@types/bun":"latest","@types/tampermonkey":"^5.0.3",esbuild:"^0.21.5",sass:"^1.77.5"},peerDependencies:{typescript:"^5.0.0"},dependencies:{"@mdi/js":"^7.4.47",clsx:"^2.1.1","esbuild-sass-plugin":"^3.3.1","vanjs-core":"^1.5.0"}};var v=Object.getPrototypeOf,S,B,Z,n,R={isConnected:1},V1=1e3,h,b={},L1=v(R),D=v(v),x,E=(C,H,L,V)=>(C??(setTimeout(L,V),new Set)).add(H),W=(C,H,L)=>{let V=Z;Z=H;try{return C(L)}catch(M){return console.error(M),L}finally{Z=V}},g=C=>C.filter(H=>H._dom?.isConnected),N=C=>h=E(h,C,()=>{for(let H of h)H._bindings=g(H._bindings),H._listeners=g(H._listeners);h=x},V1),f={get val(){return Z?._getters?.add(this),this.rawVal},get oldVal(){return Z?._getters?.add(this),this._oldVal},set val(C){Z?._setters?.add(this),C!==this.rawVal&&(this.rawVal=C,this._bindings.length+this._listeners.length?(B?.add(this),S=E(S,this,r1)):this._oldVal=C)}},I=C=>({__proto__:f,rawVal:C,_oldVal:C,_bindings:[],_listeners:[]}),u=(C,H)=>{let L={_getters:new Set,_setters:new Set},V={f:C},M=n;n=[];let r=W(C,L,H);r=(r??document).nodeType?r:new Text(r);for(let e of L._getters)L._setters.has(e)||(N(e),e._bindings.push(V));for(let e of n)e._dom=r;return n=M,V._dom=r},P=(C,H=I(),L)=>{let V={_getters:new Set,_setters:new Set},M={f:C,s:H};M._dom=L??n?.push(M)??R,H.val=W(C,V,H.rawVal);for(let r of V._getters)V._setters.has(r)||(N(r),r._listeners.push(M));return H},G=(C,...H)=>{for(let L of H.flat(1/0)){let V=v(L??0),M=V===f?u(()=>L.val):V===D?u(L):L;M!=x&&C.append(M)}return C},Q=(C,H,...L)=>{let[V,...M]=v(L[0]??0)===L1?L:[{},...L],r=C?document.createElementNS(C,H):document.createElement(H);for(let[e,A]of Object.entries(V)){let i=p=>p?Object.getOwnPropertyDescriptor(p,e)??i(v(p)):x,d=H+","+e,o=b[d]??(b[d]=i(v(r))?.set??0),a=e.startsWith("on")?(p,c)=>{let s=e.slice(2);r.removeEventListener(s,c),r.addEventListener(s,p)}:o?o.bind(r):r.setAttribute.bind(r,e),l=v(A??0);e.startsWith("on")||l===D&&(A=P(A),l=f),l===f?u(()=>(a(A.val,A._oldVal),r)):a(A)}return G(r,...M)},y=C=>({get:(H,L)=>Q.bind(x,C,L)}),M1=new Proxy(C=>new Proxy(Q,y(C)),y()),U=(C,H)=>H?H!==C&&C.replaceWith(H):C.remove(),r1=()=>{let C=0,H=[...S].filter(V=>V.rawVal!==V._oldVal);do{B=new Set;for(let V of new Set(H.flatMap(M=>M._listeners=g(M._listeners))))P(V.f,V.s,V._dom),V._dom=x}while(++C<100&&(H=[...B]).length);let L=[...S].filter(V=>V.rawVal!==V._oldVal);S=x;for(let V of new Set(L.flatMap(M=>M._bindings=g(M._bindings))))U(V._dom,u(V.f,V._dom)),V._dom=x;for(let V of L)V._oldVal=V.rawVal},e1=(C,H)=>U(C,u(H,C)),t={add:G,tags:M1,state:I,derive:P,hydrate:e1};var{div:z,h2:A1,p:t1,textarea:i1,button:o1}=t.tags,a1=["\u3093\u3093\uFF5E\u307E\u304B","\u{1F90F}\u{1F60E}","\u306B\u3087\u3001\u306B\u3087\u307E\u308C","\u270B\u{1F42E}\u270B\u{1F4A6}"],K=()=>{if(!location.pathname.startsWith("/watch_tmp/"))return;console.log("Injecting: NG list");let C=window.fetch,H=async(...L)=>{let V=L[0],M=L[1],r=await C.apply(void 0,L);if(!(typeof V=="string"&&V.includes("/v1/tmp/comments")&&M&&(M.method?.toUpperCase()||"GET")==="GET"))return r;let e=await r.json(),A=e.data.comments,i=localStorage.getItem("ngList")?JSON.parse(localStorage.getItem("ngList")):["\u3093\u3093\uFF5E\u307E\u304B","\u{1F90F}\u{1F60E}","\u306B\u3087\u3001\u306B\u3087\u307E\u308C","\u270B\u{1F42E}\u270B\u{1F4A6}"],d=A.filter(o=>!i.some(a=>o.message.includes(a)));return new Response(JSON.stringify({...e,data:{comments:d}}),{status:r.status,statusText:r.statusText,headers:r.headers})};window.fetch=H,globalThis.fetch=H},w=async()=>{if(location.pathname.startsWith("/watch_tmp/")){if(!document.body){await new Promise(C=>window.addEventListener("DOMContentLoaded",C)),w();return}for(;;){await new Promise(d=>requestAnimationFrame(d));let C=document.querySelector(".w_var\\(--player-width\\)");if(!C)continue;let H=C.querySelector(".aspect_16_\\/_9");if(!H)throw new Error("Failed to find inner player");let L=t.state(!1),V=localStorage.getItem("ngList")?JSON.parse(localStorage.getItem("ngList")):a1,M=i1({style:()=>`
       width: 100%;
       color: #000;
       height: 10rem;
       background-color: #fff;
-      `,value:n.join(`
-`)}),r=J({style:()=>`
+      `,value:V.join(`
+`)}),r=z({style:()=>`
         position: absolute;
-        display: ${o.val?"flex":"none"};
+        display: ${L.val?"flex":"none"};
         flex-direction: column;
         gap: 0.5rem;
         color: #fff;
@@ -26,19 +26,117 @@
         padding: 1rem;
         background-color: #252525;
         z-index: 1000;
-        `},H({style:()=>`
+        `,classList:"ngDashboard"},A1({style:()=>`
           font-size: 1.5rem;
-          `},"NG\u30EA\u30B9\u30C8"),Q("1\u884C\u306B1\u3064\u306ENG\u30EF\u30FC\u30C9\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002"),s,Y({style:()=>`
+          `},"NG\u30EA\u30B9\u30C8"),t1("1\u884C\u306B1\u3064\u306ENG\u30EF\u30FC\u30C9\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044\u3002"),M,o1({style:()=>`
           width: 100%;
           height: 2rem;
           background-color: #fff;
           color: #252525;
           cursor: pointer;
-          `,onclick:()=>{let d=s.value.split(`
-`).filter(m=>m);localStorage.setItem("ngList",JSON.stringify(d)),console.log("Saved NG list:",d),location.reload()}},"\u4FDD\u5B58"));S.add(t,r);let i=e.querySelector(".bg_\\#252525");if(!i)throw new Error("Failed to find action bar");let l=i.querySelector(".grow_1");if(!l)throw new Error("Failed to find grow");let g=J({className:"h_24px text_#fff cursor_pointer",onclick:()=>{console.log("Clicked"),o.val=!o.val}},"NG");i.insertBefore(g,l.nextSibling);break}}};console.log(`%c== \u30B3\u30CD\u30B3\u30CD\uFF08\u4EEE\uFF09 ========================================
+          `,onclick:()=>{let o=M.value.split(`
+`).filter(a=>a);localStorage.setItem("ngList",JSON.stringify(o)),console.log("Saved NG list:",o),location.reload()}},"\u4FDD\u5B58"));t.add(H,r);let e=C.querySelector(".bg_\\#252525");if(!e)throw new Error("Failed to find action bar");let A=e.querySelector(".grow_1");if(!A)throw new Error("Failed to find grow");let i=z({className:"h_24px text_#fff cursor_pointer",style:`
+        font-size: 14px
+        `,onclick:()=>{console.log("Clicked"),L.val=!L.val}},"NG");e.insertBefore(i,A.nextSibling);break}}};function q(C){var H,L,V="";if(typeof C=="string"||typeof C=="number")V+=C;else if(typeof C=="object")if(Array.isArray(C)){var M=C.length;for(H=0;H<M;H++)C[H]&&(L=q(C[H]))&&(V&&(V+=" "),V+=L)}else for(L in C)C[L]&&(V&&(V+=" "),V+=L);return V}function m1(){for(var C,H,L=0,V="",M=arguments.length;L<M;L++)(C=arguments[L])&&(H=q(C))&&(V&&(V+=" "),V+=H);return V}var _=m1;var j="M5,5H10V7H7V10H5V5M14,5H19V10H17V7H14V5M17,14H19V19H14V17H17V14M10,17V19H5V14H7V17H10Z",X="M14,14H19V16H16V19H14V14M5,14H10V19H8V16H5V14M8,5H10V10H5V8H8V5M19,8V10H14V5H16V8H19Z";var{form:p1,input:J,button:Y}=t.tags,{path:$,svg:v1}=t.tags("http://www.w3.org/2000/svg"),T=async()=>{if(location.pathname.startsWith("/watch_tmp/")){if(console.log("Injecting: Fullscreen"),!document.body){await new Promise(C=>window.addEventListener("DOMContentLoaded",C)),T();return}for(;;){await new Promise(m=>requestAnimationFrame(m));let C=document.querySelector(".w_var\\(--player-width\\)");if(!C)continue;let H=C.children[0],[L,V,M]=Array.from(H.children),r=()=>{i.val?document.exitFullscreen():H.requestFullscreen()},e=null,A=()=>{e&&window.clearTimeout(e),document.body.setAttribute("data-activated","true"),e=window.setTimeout(()=>{document.body.setAttribute("data-activated","false")},5e3)};document.addEventListener("mouseover",A),L.addEventListener("click",A),H.addEventListener("keydown",m=>{m.key==="f"&&r()});let i=t.state(!1);window.addEventListener("fullscreenchange",()=>{document.fullscreenElement===H?(i.val=!0,document.body.classList.add("fullScreen")):(i.val=!1,document.body.classList.remove("fullScreen"))});let d=Y({classList:_(["w_24px","h_24px","fill_#fff","cursor_pointer","[&_svg]:w_24px","[&_svg]:h_24px","[&_svg]:fill_#fff","[&_svg]:cursor_pointer"]),onclick:r},v1({width:"24",height:"24",viewBox:"4 4 16 16"},()=>i.val?$({d:X}):$({d:j}))),o=C.querySelector('input[placeholder="\u30B3\u30DE\u30F3\u30C9"]');if(!o)throw new Error("Command input not found");let a=C.querySelector('input[placeholder="\u30B3\u30E1\u30F3\u30C8"]');if(!a)throw new Error("Comment input not found");let l=a.nextElementSibling;if(!l)throw new Error("Post button not found");let p=J({type:"text",placeholder:"\u30B3\u30DE\u30F3\u30C9",style:()=>`
+        background-color: #fff;
+        color: #000;
+        border-radius: 0;
+        -webkit-appearance: none;
+        border-top-left-radius: 0.5rem;
+        border-bottom-left-radius: 0.5rem;
+        border: 2px solid #ccc;
+        `,oninput:m=>{let O=m;o.value=O.target.value}}),c=J({type:"text",placeholder:"\u30B3\u30E1\u30F3\u30C8",style:()=>`
+        background-color: #fff;
+        color: #000;
+        border-radius: 0;
+        -webkit-appearance: none;
+        border-top: 2px solid #ccc;
+        border-bottom: 2px solid #ccc;
+        `,oninput:m=>{let O=m;a.value=O.target.value}}),s=p1({classList:"fullScreenCommentBar",onsubmit:m=>{m.preventDefault(),p.value="",c.value="",l.click()}},p,c,Y({style:()=>`
+          background-color: #007cff;
+          color: #fff;
+          cursor: pointer;
+          border-radius: 0;
+          -webkit-appearance: none;
+          border-top-right-radius: 0.5rem;
+          border-bottom-right-radius: 0.5rem;
+          `,type:"submit"},"\u6295\u7A3F"));t.add(M,d),t.add(M,s);break}}};var C1=`.fullScreenCommentBar {
+  display: none;
+}
+
+[data-iphone=true] .fullScreenCommentBar {
+  display: none !important;
+}
+
+.fullScreen .innerPlayer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+.fullScreen .videoPlayer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.fullScreen .seekBar {
+  position: absolute;
+  width: 100%;
+  bottom: 48px;
+}
+.fullScreen .actionBar {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+.fullScreen .fullScreenCommentBar {
+  display: grid;
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  grid-template-columns: 6rem 30vw 4rem;
+  transform: translateX(-50%);
+  height: 32px;
+}
+@media (max-width: 1150px) {
+  .fullScreen .fullScreenCommentBar {
+    bottom: 64px;
+    grid-template-columns: 4rem 50vw 4rem;
+  }
+}
+.fullScreen .fullScreenCommentBar > * {
+  padding: 0 0.5rem;
+}
+.fullScreen[data-activated=true] .seekBar,
+.fullScreen[data-activated=true] .actionBar {
+  opacity: 1;
+}
+.fullScreen[data-activated=false] .seekBar,
+.fullScreen[data-activated=false] .actionBar {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.fullScreen .ngDashboard {
+  bottom: calc(1rem + 48px) !important;
+}
+
+.playerContainer {
+  container: player/inline-size;
+}
+
+@container (max-width: 40rem) {
+  .volume {
+    display: none;
+  }
+  .currentTime {
+    display: none;
+  }
+}`;var{style:l1}=t.tags,F=async()=>{if(location.pathname.startsWith("/watch_tmp/")){if(console.log("Injecting: Styles"),!document.body){await new Promise(C=>window.addEventListener("DOMContentLoaded",C)),F();return}for(;;){if(await new Promise(A=>requestAnimationFrame(A)),!document.querySelector("header"))continue;let H=document.querySelector(".w_var\\(--player-width\\)");if(!H)throw new Error("Player not found");let L=H.children[0],[V,M,r]=Array.from(L.children);H.classList.add("playerContainer"),L.classList.add("innerPlayer"),V.classList.add("videoPlayer"),M.classList.add("seekBar"),r.classList.add("actionBar");let e=document.querySelector(".w_80px.bg_\\#555.ssOnly\\:d_none");if(!e)throw new Error("Volume not found");e.classList.add("volume"),navigator.userAgent.includes("iPhone")&&document.body.setAttribute("data-iphone","true"),t.add(document.head,l1(C1));break}for(;;){await new Promise(H=>requestAnimationFrame(H));let C=document.querySelector("div.fs_12.font_alnum");if(C){C.classList.add("currentTime");break}}}};var{style:T1}=t.tags;console.log(`%c== \u30B3\u30CD\u30B3\u30CD\uFF08\u4EEE\uFF09 ========================================
   %c\u30CB\u30B3\u30CB\u30B3\uFF08Re:\u4EEE\uFF09\u306E\u88DC\u52A9\u30C4\u30FC\u30EB\u3002
-  %cVersion: %cv${x.version}
+  %cVersion: %cv${k.version}
   Developed by %cNanashi.
-  %c${x.homepage}
+  %c${k.homepage}
 ----------------------------------------------------------
-`,"color: #18b4e6","color: auto","color: #18b4e6","color: auto","color: #48b0d5","color: #18b4e6");for(let e of[M]){let t=document.createElement("script");t.textContent=`(${e.toString()})()`,document.body.appendChild(t)}L();})();
+`,"color: #18b4e6","color: auto","color: #18b4e6","color: auto","color: #48b0d5","color: #18b4e6");for(let C of[K]){let H=document.createElement("script");H.textContent=`(${C.toString()})()`,document.body.appendChild(H)}F();w();T();})();
