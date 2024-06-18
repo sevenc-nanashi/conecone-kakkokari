@@ -20,13 +20,14 @@ console.log(
   "color: #18b4e6",
 );
 
+styles.main();
+
 for (const script of [ngList.inject]) {
   const scriptElement = document.createElement("script");
   scriptElement.textContent = `(${script.toString()})()`;
   document.body.appendChild(scriptElement);
 }
 
-styles.main();
 ngList.main();
 fullScreen.main();
 doubleTap.main();

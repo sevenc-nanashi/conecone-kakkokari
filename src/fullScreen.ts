@@ -2,6 +2,7 @@
 import clsx from "clsx";
 import van from "vanjs-core";
 import { mdiFullscreen, mdiFullscreenExit } from "@mdi/js";
+import { isCommentPanelInstalled } from "./styles";
 const { form, input, button } = van.tags;
 const { path, svg } = van.tags("http://www.w3.org/2000/svg");
 
@@ -19,20 +20,20 @@ export const main = async () => {
   }
   while (true) {
     await new Promise((resolve) => requestAnimationFrame(resolve));
-    const player = document.querySelector(".w_var\\(--player-width\\)");
-    if (!player) {
+    const playerContainer = document.querySelector(".playerContainer");
+    const videoPlayer = document.querySelector(".videoPlayer");
+    const actionBar = document.querySelector(".actionBar");
+    const commentBar = document.querySelector(".commentBar");
+
+    if (!playerContainer || !videoPlayer || !actionBar || !commentBar) {
       continue;
     }
-
-    const innerPlayer = player.children[0];
-
-    const [videoPlayer, _seekBar, actionBar] = Array.from(innerPlayer.children);
 
     const toggleFullscreen = () => {
       if (isFullscreen.val) {
         document.exitFullscreen();
       } else {
-        innerPlayer.requestFullscreen();
+        playerContainer.requestFullscreen();
       }
     };
 
@@ -49,20 +50,11 @@ export const main = async () => {
     };
     document.addEventListener("mouseover", activate);
     videoPlayer.addEventListener("click", activate);
-    innerPlayer.addEventListener("keydown", (e) => {
-      const event = e as KeyboardEvent;
-      if ((event.target as HTMLElement)?.tagName === "INPUT") {
-        return;
-      }
-      if (event.key === "f") {
-        toggleFullscreen();
-      }
-    });
 
     const isFullscreen = van.state(false);
 
     window.addEventListener("fullscreenchange", () => {
-      if (document.fullscreenElement === innerPlayer) {
+      if (!!document.fullscreenElement) {
         isFullscreen.val = true;
         document.body.classList.add("fullScreen");
       } else {
@@ -102,19 +94,11 @@ export const main = async () => {
       ),
     );
 
-    const commandInput = player.querySelector<HTMLInputElement>(
-      'input[placeholder="コマンド"]',
-    );
-    if (!commandInput) {
-      throw new Error("Command input not found");
-    }
-    const commentInput = player.querySelector<HTMLInputElement>(
-      'input[placeholder="コメント"]',
-    );
-    if (!commentInput) {
-      throw new Error("Comment input not found");
-    }
-    const postButton = commentInput.nextElementSibling as HTMLButtonElement;
+    const [commandInput, commentInput] = Array.from(
+      commentBar.querySelectorAll("input"),
+    ) as [HTMLInputElement, HTMLInputElement];
+    const postButton = commentInput.parentElement!
+      .nextElementSibling as HTMLButtonElement;
     if (!postButton) {
       throw new Error("Post button not found");
     }
@@ -184,6 +168,16 @@ export const main = async () => {
 
     van.add(actionBar, fullScreenButton);
     van.add(actionBar, fullScreenCommentBar);
+
+    playerContainer.addEventListener("keydown", (e) => {
+      const event = e as KeyboardEvent;
+      if ((event.target as HTMLElement)?.tagName === "INPUT") {
+        return;
+      }
+      if (event.key === "f") {
+        toggleFullscreen();
+      }
+    });
 
     break;
   }

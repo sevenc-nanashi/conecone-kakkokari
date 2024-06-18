@@ -3,6 +3,8 @@ import van from "vanjs-core";
 
 const { style } = van.tags;
 
+export let isCommentPanelInstalled = false;
+
 export const main = async () => {
   if (!location.pathname.startsWith("/watch_tmp/")) {
     return;
@@ -22,16 +24,41 @@ export const main = async () => {
       continue;
     }
 
-    const player = document.querySelector(".w_var\\(--player-width\\)");
-    if (!player) {
+    // コメントパネル（https://github.com/inonote/nico-rekari-comment-panel-userscript）との競合回避。
+    // コメントパネルの改造が終わるまで待機する。
+    const currentTime = document.querySelector("div.fs_12.font_alnum");
+    if (!currentTime) {
+      continue;
+    }
+
+    currentTime.classList.add("currentTime");
+
+    const mainSection = document.querySelector(".w_var\\(--player-width\\)");
+    if (!mainSection) {
       throw new Error("Player not found");
     }
 
-    const innerPlayer = player.children[0];
+    // コメントパネルはplayerContainerを包むgrid要素を追加するため、その有無でコメントパネルの有無を判定する。
+    const commentPanelGridOrPlayerContainer = mainSection.firstElementChild!;
+    isCommentPanelInstalled =
+      (commentPanelGridOrPlayerContainer as HTMLElement).style.display ===
+        "grid" && commentPanelGridOrPlayerContainer.childElementCount === 2;
 
-    const [videoPlayer, seekBar, actionBar] = Array.from(innerPlayer.children);
-    player.classList.add("playerContainer");
-    innerPlayer.classList.add("innerPlayer");
+    console.log("Comment panel installed:", isCommentPanelInstalled);
+
+    const [playerContainer, commentBar] = Array.from(
+      (isCommentPanelInstalled
+        ? mainSection.firstElementChild!.firstElementChild!.children
+        : mainSection.children) as HTMLCollectionOf<HTMLElement>,
+    );
+
+    const [videoPlayer, _supporterBar, seekBar, actionBar] = Array.from(
+      playerContainer.children,
+    );
+
+    mainSection.classList.add("mainSection");
+    playerContainer.classList.add("playerContainer");
+    commentBar.classList.add("commentBar");
     videoPlayer.classList.add("videoPlayer");
     seekBar.classList.add("seekBar");
     actionBar.classList.add("actionBar");
@@ -48,15 +75,5 @@ export const main = async () => {
 
     van.add(document.head, style(inject));
     break;
-  }
-
-  while (true) {
-    await new Promise((resolve) => requestAnimationFrame(resolve));
-    const currentTime = document.querySelector("div.fs_12.font_alnum");
-    if (!currentTime) {
-      continue;
-    }
-    currentTime.classList.add("currentTime");
-    break
   }
 };

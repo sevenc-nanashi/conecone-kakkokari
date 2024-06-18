@@ -73,14 +73,14 @@ export const main = async () => {
   }
   while (true) {
     await new Promise((resolve) => requestAnimationFrame(resolve));
-    const player = document.querySelector(".playerContainer");
-    if (!player) {
+    const mainSection = document.querySelector(".mainSection");
+    if (!mainSection) {
       continue;
     }
 
-    const innerPlayer = player.querySelector(".innerPlayer");
-    if (!innerPlayer) {
-      throw new Error("Failed to find inner player");
+    const playerContainer = mainSection.querySelector(".playerContainer");
+    if (!playerContainer) {
+      continue;
     }
 
     const ngVisible = van.state(false);
@@ -146,9 +146,9 @@ export const main = async () => {
       ),
     );
 
-    van.add(innerPlayer, ngDashboard);
+    van.add(playerContainer, ngDashboard);
 
-    const actionBar = player.querySelector(".bg_\\#252525");
+    const actionBar = mainSection.querySelector(".actionBar");
     if (!actionBar) {
       throw new Error("Failed to find action bar");
     }
