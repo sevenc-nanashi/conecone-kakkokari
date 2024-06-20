@@ -1,7 +1,7 @@
 {
   "name": "conecone-kakkokari",
   "module": "index.ts",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "homepage": "https://github.com/sevenc-nanashi/conecone-kakkokari",
   "scripts": {
     "build": "bun run ./build.ts"
