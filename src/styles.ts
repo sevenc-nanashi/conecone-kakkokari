@@ -63,7 +63,7 @@ export const main = async () => {
     seekBar.classList.add("seekBar");
     actionBar.classList.add("actionBar");
 
-    const volume = document.querySelector(".w_80px.bg_\\#555.ssOnly\\:d_none");
+    const volume = document.querySelector(".w_80px.bg_\\#555");
     if (!volume) {
       throw new Error("Volume not found");
     }
