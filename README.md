@@ -5,6 +5,8 @@
 
 [メッセージ](./MESSAGE.md)
 
+[削除前のコードはこちら](https://github.com/sevenc-nanashi/conecone-kakkokari/tree/legacy)
+
 ---
 
 コネコネ（仮）は、ニコニコ（Re:仮）の補助ツールです。
